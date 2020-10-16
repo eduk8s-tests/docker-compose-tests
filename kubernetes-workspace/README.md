@@ -120,8 +120,8 @@ http://workshop.127-0-0-1.nip.io:10080
 You must use a `nip.io` style hostname as shown, you cannot use `127.0.0.1`
 or `localhost`.
 
-Using a SSH Tunnel
-------------------
+Using an SSH Tunnel
+-------------------
 
 If you are running the environment in a VM in a data center and only have
 SSH access to that VM, with only that VM having visibility of the Kubernetes
