@@ -144,3 +144,44 @@ URL:
 ```
 http://workshop.127-0-0-1.nip.io:10080
 ```
+
+Changing the hostname
+---------------------
+
+To access the environment you must use the `127-0-0-1.nip.io` domain. By
+default the subdomain within that must be called `workshop`. If you want
+to use a different subdomain name, you must change the `docker-compose`
+configuration.
+
+To use `jumpbox` instead of `workshop` as the sub domain, you would need
+to use:
+
+```
+version: '2.0'
+services:
+  workshop:
+    image: quay.io/eduk8s/base-environment:201007.062234.403f0f1
+    environment:
+    - SESSION_NAMESPACE=jumpbox
+    - INGRESS_PORT_SUFFIX=:10080
+    ports:
+    - "10080:10080"
+    volumes:
+    - ./workshop.yaml:/opt/eduk8s/config/workshop.yaml
+    - ./kubeconfig.yaml:/opt/eduk8s/config/kubeconfig.yaml
+    extra_hosts:
+    - jumpbox-console:127.0.0.1
+    - jumpbox-editor:127.0.0.1
+```
+
+That is, set `SESION_NAMESPACE` to the name you want to use, and change
+the names of the `extra_hosts` settings so they use the new name.
+
+The environment would then be accessed as:
+
+```
+http://jumpbox.127-0-0-1.nip.io:10080
+```
+
+If you don't make both changes, then although you will be able to access
+the terminals, you will not be able to access the console or editor.
