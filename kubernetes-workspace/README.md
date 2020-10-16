@@ -145,6 +145,49 @@ URL:
 http://workshop.127-0-0-1.nip.io:10080
 ```
 
+Mounting local directory
+------------------------
+
+By default the home directory for the terminal of the workshop environment
+resides in the ephemeral filesystem of the container. This means any work
+done in the filesystem from the environment will be lost when the
+environment is shutdown.
+
+If you want to ensure work is saved back into the persistent storage of
+the local host, you will need to mount a directory onto the home directory
+for the user running in the environment. This can be done using:
+
+```
+version: '2.0'
+services:
+  workshop:
+    image: quay.io/eduk8s/base-environment:201007.062234.403f0f1
+    environment:
+    - INGRESS_PORT_SUFFIX=:10080
+    ports:
+    - "10080:10080"
+    volumes:
+    - ./workshop.yaml:/opt/eduk8s/config/workshop.yaml
+    - ./kubeconfig.yaml:/opt/eduk8s/config/kubeconfig.yaml
+    - .:/home/eduk8s
+    extra_hosts:
+    - workshop-console:127.0.0.1
+    - workshop-editor:127.0.0.1
+```
+
+Note that unless running this in a situation such as a VM just for this
+purpose, you should avoid mounting the home directory of the local user
+into the container. This is because any configuration in hidden directories
+of the home directory may be overridden by applications running inside of
+the container. This could interfere with your ability to then run the
+same applications on the local host if they are incompatible systems.
+
+In the example above we still mounted the `kubeconfig.yaml` in explicitly.
+If you were mounting in the home directory from a local user, and that user
+had an existing configuration for Kubernetes in `~/.kube/config`, it would
+be enough to mount the home directory, and you wouldn't need to explicitly
+mount the Kubernetes config file.
+
 Changing the hostname
 ---------------------
 
