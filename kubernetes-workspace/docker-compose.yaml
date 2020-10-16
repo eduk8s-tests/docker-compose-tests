@@ -1,0 +1,15 @@
+version: '2.0'
+services:
+  workshop:
+    image: quay.io/eduk8s/base-environment:201007.062234.403f0f1
+    environment:
+    - INGRESS_PORT_SUFFIX=:10080
+    ports:
+    - "10080:10080"
+    volumes:
+    - ./workshop.yaml:/opt/eduk8s/config/workshop.yaml
+    - ~/.kube/config:/opt/eduk8s/config/kubeconfig.yaml
+    - ~/.minikube:/Users/graham/.minikube
+    extra_hosts:
+    - workshop-console:127.0.0.1
+    - workshop-editor:127.0.0.1
