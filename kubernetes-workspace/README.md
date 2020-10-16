@@ -71,7 +71,7 @@ services:
 
 This specific example is set up to work against a local `minikube` instance.
 
-When `minikube` is being used, the `~/.kube.config` file includes paths to
+When `minikube` is being used, the `~/.kube/config` file includes paths to
 certificates for accessing the Kubernetes cluster under the `~/.minikube`
 directory. Those paths include the full path of the users home directory,
 so the `~/.minikube` directory needs to be mounted at the same path for the
@@ -95,7 +95,7 @@ services:
     - "10080:10080"
     volumes:
     - ./workshop.yaml:/opt/eduk8s/config/workshop.yaml
-    - /kubeconfig.yaml:/opt/eduk8s/config/kubeconfig.yaml
+    - ./kubeconfig.yaml:/opt/eduk8s/config/kubeconfig.yaml
     extra_hosts:
     - workshop-console:127.0.0.1
     - workshop-editor:127.0.0.1
@@ -136,7 +136,7 @@ ssh -N -L 10080:localhost:10080 username@remotehost
 ```
 
 Replace `username@remotehost` with the login details of the VM. If necessary,
-enter any password for the user.
+enter any password for the user when prompted.
 
 To access the environment, you can then open your local web browser on the
 URL:
